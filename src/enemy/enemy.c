@@ -29,9 +29,10 @@ Enemy* createEnemy(int x, int y, TypeEn* type) {
 	enemy->y = y;
 	enemy->type = type;
 	enemy->animation = createAnimation(type->picture);
-	Case anim_start = *getCase(x,y);
-	enemy->animPosition.x = anim_start.x;
-	enemy->animPosition.y = anim_start.y;
+	Case *anim_start = getCase(x,y);
+	anim_start->hasEnemy++;
+	enemy->animPosition.x = anim_start->x;
+	enemy->animPosition.y = anim_start->y;
 	enemy->animPosition.h = rand()%_map->nbCaseH;   
 	enemy->animPosition.w = rand()%_map->nbCaseW;
 	enemy->life = type->maxLife;
