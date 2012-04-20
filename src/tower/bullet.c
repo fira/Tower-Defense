@@ -12,14 +12,18 @@
 /**
  * \fn Bullet* createBullet(Tower *tower)
  * \brief create a new bullet
- * a new bullet which doesn't have 
+ * only tower must be able to create it's own bullet, and only when it target an enemy
  * \param tower the tower the bullet belong to
  */
 
 Bullet* createBullet(Tower *tower){
-	Bullet *bullet = malloc(sizeof (Bullet));
-	bullet->type = tower->type->typeBul;
-	bullet->position = searchEnemy(tower);
+	Bullet *bullet;
+	if(tower->target){
+		bullet = malloc(sizeof (Bullet));
+		bullet->type = tower->type->typeBul;
+	}else{
+		bullet = NULL;
+	}
   return bullet;
 }
 
@@ -49,3 +53,4 @@ void animateBullet(Bullet *bullet){
 		drawBullet(bullet);
 /*	}*/
 }
+

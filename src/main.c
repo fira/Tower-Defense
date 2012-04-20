@@ -185,6 +185,7 @@ int main(int argc, char* argv[]) {
 /*      if(event.key.keysym.sym == SDLK_u){*/
 /*         upgrade(tower1);*/
 /*      }*/
+		tower1->target = searchEnemy(tower1);
 		Bullet *bullet1 = createBullet(tower1);
 		animateBullet(bullet1);
       drawTowerList(towerList);

@@ -20,3 +20,4 @@ TypeBul* createTypeBul(char* image, int speed) {
 
 	return typeBul;
 }
+

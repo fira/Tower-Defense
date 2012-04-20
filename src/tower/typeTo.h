@@ -18,6 +18,7 @@
 #include <SDL/SDL_image.h>
 
 #include "typeBul.h"
+#include "../map/map.h"
 
 
 typedef struct TypeTo {
@@ -39,6 +40,7 @@ typedef struct{
 	int y;
 	TypeTo* type;
 	int kills;
+	Case *target;
 } Tower;
 
 

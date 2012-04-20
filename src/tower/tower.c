@@ -22,7 +22,7 @@ Tower* createTower(int x, int y, TypeTo* type) {
    tower->y = y;
    tower->kills = 0;
    tower->type= type;
-   
+   tower->target = NULL;
    
   return tower;
 }
