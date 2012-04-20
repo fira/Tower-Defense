@@ -90,7 +90,7 @@ int main(int argc, char* argv[]) {
 	TypeEn *blackCat = createTypeEn(100, 5, false, true, true, false, 1,getPath("resources/black_transparent_cat.png"));
 	Enemy *cat1 = createEnemy(1,1,whiteCat);
 	Enemy *cat2 = createEnemy(1,10,whiteCat);
-	Enemy  *cat3 = createEnemy(5,5,blackCat);
+	Enemy  *cat3 = createEnemy(6,7,blackCat);
 	Enemy *cat4 = createEnemy(21,4,blackCat);
 	
    TypeEn *zombie = createTypeEn(100,5,false,true,true,false,1,getPath("resources/zombie.png"));
@@ -186,8 +186,10 @@ int main(int argc, char* argv[]) {
 /*         upgrade(tower1);*/
 /*      }*/
 		tower1->target = searchEnemy(tower1);
-		Bullet *bullet1 = createBullet(tower1);
-//		animateBullet(bullet1);
+		if(tower1->target){
+			Bullet *bullet1 = createBullet(tower1);
+			animateBullet(bullet1);
+		}
       drawTowerList(towerList);
 	
 	/* This should be handled by event.c
