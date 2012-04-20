@@ -187,7 +187,7 @@ int main(int argc, char* argv[]) {
 /*      }*/
 		tower1->target = searchEnemy(tower1);
 		Bullet *bullet1 = createBullet(tower1);
-		animateBullet(bullet1);
+//		animateBullet(bullet1);
       drawTowerList(towerList);
 	
 	/* This should be handled by event.c
@@ -215,7 +215,7 @@ int main(int argc, char* argv[]) {
 		}
 		
 		// DEBUG
-		printf("Frame %i : %ims\n", framecounter++, currentTime - previousTime);		
+/*		printf("Frame %i : %ims\n", framecounter++, currentTime - previousTime);		*/
 
 		previousTime = SDL_GetTicks();
 	}
