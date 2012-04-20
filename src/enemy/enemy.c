@@ -96,11 +96,11 @@ SDL_Rect* getRect(Animation* anim) {
  */
 void moveEnemy(Enemy* enemy) {
 	SDL_Rect anim = enemy->animPosition;
-	Case nextCase = *getCase(enemy->x, enemy->y);
+	Case *nextCase = getCase(enemy->x, enemy->y);
 	
-	if(anim.x == nextCase.x && anim.y == nextCase.y) {
+	if(anim.x == nextCase->x && anim.y == nextCase->y) {
 		enemy->animation.direction = nextMovement(enemy);
-		nextCase.hasEnemy--;
+		nextCase->hasEnemy--;
 		switch(enemy->animation.direction) {
 			case RIGHT:
 				enemy->x++;
@@ -132,14 +132,14 @@ Movement nextMovement(Enemy* enemy){
 	int x = enemy->x;
 	int y = enemy->y;
 	
-	Case currentCase = *getCase(x,y);
+	Case *currentCase = getCase(x,y);
 	extern Case _cell;    //debug (candy_cane)
 	Case finalCase = _cell;    //debug (candy_cane)
-	if(currentCase.xx == finalCase.xx && currentCase.yy == finalCase.yy) {
+	if(currentCase->xx == finalCase.xx && currentCase->yy == finalCase.yy) {
 		return STAY;
 	}
 	if(!enemy->list) {
-		enemy->list = searchPath(currentCase, finalCase);
+		enemy->list = searchPath(*currentCase, finalCase);
 		return STAY;
 	}
 	

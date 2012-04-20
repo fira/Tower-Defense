@@ -27,7 +27,7 @@ typedef struct {
 	int xx; int yy;   //*!< position of the case in the grid
 	int size;         //*!< size of... something?... maybe...
 	int hasTower;    //*!< if there are a Tower on the Case
-	bool hasEnemy;    //*!< if there are an Enemy on the Case
+	int hasEnemy;    //*!< number of enemy on the case
 } Case;
 
 #endif
