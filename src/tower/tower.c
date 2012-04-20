@@ -66,8 +66,8 @@ Case* searchEnemy(Tower *tower){
 	Case *enemyPosition = NULL;
 	for(int i=-range;i<=range;i++){
 		for(int j=-range;j<=range;j++){
-			if(isInCircle(i,j,range*2,x,y)){	//for each case in range's circle
-				Case *possibleEnemyPosition = whichCase(i, j);
+			if(isInCircle(i+x,j+y,range*2,x,y)){	//for each case in range's circle
+				Case *possibleEnemyPosition = getCase(i+x, j+y);
 				if(possibleEnemyPosition->hasEnemy){
 					return possibleEnemyPosition;
 				}
@@ -80,8 +80,8 @@ Case* searchEnemy(Tower *tower){
 /**
  * \fn int isInCircle(int x, int y, int range, int a, int b)
  * \brief Calcul if (x,y) is in the cercle C(a,b)
- * \param x x position of the point
- * \param y y position of the point
+ * \param x x position of the point to find
+ * \param y y position of the point to find
  * \param a x position of the circle
  * \param b y position of the circle
  * \param range length of the circle
