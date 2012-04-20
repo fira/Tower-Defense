@@ -21,6 +21,7 @@ Bullet* createBullet(Tower *tower){
 	if(tower->target){
 		bullet = malloc(sizeof (Bullet));
 		bullet->type = tower->type->typeBul;
+		bullet->target = tower->target;
 	}else{
 		bullet = NULL;
 	}

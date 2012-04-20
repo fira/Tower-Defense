@@ -20,7 +20,7 @@
 
 typedef struct{
 	Case *position;	//!< Bullet
-	Enemy *target;		//!< the enemy targeted by the bullet //TODO (not implemented yet)
+	Case *target;		//!< the target position
 	TypeBul *type;		//!< the type of bullet
 }Bullet;
 
