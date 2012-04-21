@@ -1,0 +1,40 @@
+======================== T O W E R   D E F E N S E ===========================
+
+
+===== DEPENDENCIES ============================================================
+CMake 2.8.6 or newer
+SDL 1.2.15 or newer & dev files
+SDL_image 1.2 & dev files
+===============================================================================
+This project uses CMake for building, which is a cross platform building tool
+Either grab it from your package manager or on the official website: 
+http://www.cmake.org/cmake/resources/software.html
+
+Currently only unix based platforms are supported. 
+It should still work on other systems supported by CMake (eg. Win32)
+
+You'll also need the SDL library and it's SDL-image plugin.
+On Debian based system, you want libsdl-dev and libsdl-image1.2-dev
+
+
+
+===== BUILD INSTRUCTIONS=======================================================
+1. cd build/
+2. use ./build.sh to generate the Makefile using CMake
+3. make
+4. The binary will be generated as src/towerdefense
+
+Note that currently it is not possible to install the project on your system,
+you have to launch it from the building directory.
+
+
+===== Q&A =====================================================================
+Q: Nothing works!
+A: That's not a question.
+
+Q: The game fails to load resources
+A: Currently the resources/ directory needs to be in the same directory than
+the binary. This will probably be changed later.
+
+Q: It's still not working!
+A: As of now, this is considered normal behavior !
