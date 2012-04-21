@@ -27,7 +27,10 @@ Depends on the SDL library, and it add-on SDL_image library.
 
 How to install:
 
-$autoreconf
-$./configure
+$cd build
+$./build
 $make
 
+then run:
+
+$../src/towerdefense
