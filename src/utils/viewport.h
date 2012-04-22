@@ -30,17 +30,17 @@ If not, see <http://www.gnu.org/licenses/>.
  * \brief The displayed screen
  */
 typedef struct {
-	SDL_Rect screensurface;	//!< Screen surface is where the viewport is displayed
+	SDL_Rect screensurface;		//!< Screen surface is where the viewport is displayed
+	SDL_Rect mapsurface;		//!< Map surface is the part of the map the viewport displays
 
-	SDL_Rect mapsurface;		//!< Map surface is what part of the map the viewport displays
+	Map* map;					//!< The map displayed by the viewport
+	SDL_Surface* screen;		//!< Screen the viewport will be rendered on
 
-	Map* map;
-	SDL_Surface* screen;
-
-	SDL_Rect* revertrects;
-	int revertcount;			//!< Info to revert the displayed sprites
+	// FIXME This is sketchy, we could use a real way of rendering the map...
+	SDL_Rect* revertrects;		//!< List of sprites to "reverse-blit" to reset the map
+	int revertcount;			//!< Number of sprites to revert
 	
-	int completeredraw;		//!< Indicates the viewport's background should be redrawn completely on next frame
+	int completeredraw;			//!< Indicates the viewport's background should be redrawn completely on next frame
 } Viewport;
 
 extern Viewport* _viewport;
