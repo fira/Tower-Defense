@@ -10,8 +10,7 @@
 
 
 #include <stdbool.h>
-#include <stdio.h>
-#include <SDL/SDL_ttf.h>
+
 
 #include "map/map.h"
 #include "enemy/enemy.h"
@@ -23,7 +22,7 @@
 #include "utils/button.h"
 #include "enemy/action.h"
 #include "tower/bullet.h"
-
+#include "utils/message.h"
 
 // Global variables
 
@@ -76,7 +75,6 @@ int main(int argc, char* argv[]) {
 	
 	TTF_Font *police = TTF_OpenFont(getPath("resources/zombieCat.ttf"), 20);
 	TTF_SetFontStyle(police,TTF_STYLE_BOLD);
-	SDL_Color blackColor={0,0,0};
 
 
 
@@ -179,10 +177,8 @@ int main(int argc, char* argv[]) {
 	Case cell = *getCase(9,9);
 	position.x = cell.x;
 	position.y = cell.y;
-	char text[3];
-	snprintf(text,3,"%.2d",cat3->x);
-	SDL_Surface *miaouText = TTF_RenderUTF8_Solid(police, text, blackColor);
-	blitToViewport(viewport,miaouText,NULL,&position);
+
+	SDL_Surface *renderText = printIntTTF(cat3->x, *getCase(9,9), police);
 /////////////////////////////////////////////////////////////////////
 		
       // Move enemies
@@ -236,7 +232,7 @@ int main(int argc, char* argv[]) {
 /*		printf("Frame %i : %ims\n", framecounter++, currentTime - previousTime);		*/
 
 		previousTime = SDL_GetTicks();
-	 SDL_FreeSurface(miaouText);
+		SDL_FreeSurface(renderText);
 	}
 	free(actionList);
 	TTF_CloseFont(police);
