@@ -11,6 +11,7 @@
 
 #include <stdbool.h>
 
+
 #include "map/map.h"
 #include "enemy/enemy.h"
 #include "tower/tower.h"
@@ -21,7 +22,7 @@
 #include "utils/button.h"
 #include "enemy/action.h"
 #include "tower/bullet.h"
-
+#include "utils/message.h"
 
 // Global variables
 
@@ -70,7 +71,14 @@ int main(int argc, char* argv[]) {
 
 	SDL_Init(SDL_INIT_VIDEO);
 	SDL_SetEventFilter(eventFilter);
+	TTF_Init();
 	
+	TTF_Font *police = TTF_OpenFont(getPath("resources/zombieCat.ttf"), 20);
+	TTF_Font *policeMini = TTF_OpenFont(getPath("resources/zombieCat.ttf"), 14);
+	TTF_SetFontStyle(police,TTF_STYLE_BOLD);
+
+
+
 	screen = SDL_SetVideoMode(800, 600, 32, SDL_HWSURFACE | SDL_ASYNCBLIT | SDL_DOUBLEBUF | SDL_NOFRAME);
 	SDL_WM_SetCaption("Tower Defense", NULL);
 	Action *actionList = initAction();
@@ -166,7 +174,14 @@ int main(int argc, char* argv[]) {
 	}
 	position.x = _cell.x;
 	position.y = _cell.y;
-    blitToViewport(viewport, IMG_Load(getPath("resources/candy_cane.png")), NULL, &position);
+	blitToViewport(viewport, IMG_Load(getPath("resources/candy_cane.png")), NULL, &position);
+	Case cell = *getCase(9,9);
+	position.x = cell.x;
+	position.y = cell.y;
+
+	SDL_Surface *renderText = printIntTTF(cat3->x, *getCase(9,9), police);
+	SDL_Surface *hubText = printHudTTF(42, police);
+	SDL_Surface *lifeText = printLifeTTF(99, cat3, policeMini);
 /////////////////////////////////////////////////////////////////////
 		
       // Move enemies
@@ -220,8 +235,14 @@ int main(int argc, char* argv[]) {
 /*		printf("Frame %i : %ims\n", framecounter++, currentTime - previousTime);		*/
 
 		previousTime = SDL_GetTicks();
+		SDL_FreeSurface(renderText);
+		SDL_FreeSurface(hubText);
+		SDL_FreeSurface(lifeText);
 	}
 	free(actionList);
+	TTF_CloseFont(police);
+	TTF_CloseFont(policeMini);
+	TTF_Quit();
 	SDL_Quit();
 	
 	return EXIT_SUCCESS;
