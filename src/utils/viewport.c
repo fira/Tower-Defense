@@ -92,7 +92,6 @@ void updateViewport(Viewport *viewport) {
 }
 
 /**
- * \fn void blitToViewport(Viewport *viewport, SDL_Surface* src, SDL_Rect src_rect, SDL_Rect dest)
  * \brief Blit the specified image to destination, on the viewport
  *
  * \param viewport The viewport element to draw on
@@ -121,7 +120,6 @@ void updateViewport(Viewport *viewport) {
 
 
 /**
- * \fn void moveViewport(Viewport* viewport, short direction)
  * \brief Moves the viewports viewing coordinates
  *
  * \param viewport The viewport to move
