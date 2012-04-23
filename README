@@ -1,7 +1,8 @@
 Tower Defense
 a club*nix project of tower defense (http://clubnix.fr)
+project page and repository: https://github.com/Nepta/Tower-Defense
 
- dev: Mickeymouse, Moutarde and Nepta
+ dev: Mickeymouse, Moutarde, Nepta and Fira
  manager: Word
  Copyright © 2011
 
@@ -19,18 +20,7 @@ a club*nix project of tower defense (http://clubnix.fr)
  GNU General Public License along with this program.
  If not, see  <http://www.gnu.org/licenses/>.
 
-=============
+===============================================================================
 
-Depends on the SDL library, and it add-on SDL_image library.
+See INSTALL file for Installation instructions
 
-------------
-
-How to install:
-
-$cd build
-$./build
-$make
-
-then run:
-
-$../src/towerdefense
