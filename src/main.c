@@ -74,6 +74,7 @@ int main(int argc, char* argv[]) {
 	TTF_Init();
 	
 	TTF_Font *police = TTF_OpenFont(getPath("resources/zombieCat.ttf"), 20);
+	TTF_Font *policeMini = TTF_OpenFont(getPath("resources/zombieCat.ttf"), 14);
 	TTF_SetFontStyle(police,TTF_STYLE_BOLD);
 
 
@@ -179,6 +180,8 @@ int main(int argc, char* argv[]) {
 	position.y = cell.y;
 
 	SDL_Surface *renderText = printIntTTF(cat3->x, *getCase(9,9), police);
+	SDL_Surface *hubText = printHudTTF(42, police);
+	SDL_Surface *lifeText = printLifeTTF(99, cat3, policeMini);
 /////////////////////////////////////////////////////////////////////
 		
       // Move enemies
@@ -233,9 +236,12 @@ int main(int argc, char* argv[]) {
 
 		previousTime = SDL_GetTicks();
 		SDL_FreeSurface(renderText);
+		SDL_FreeSurface(hubText);
+		SDL_FreeSurface(lifeText);
 	}
 	free(actionList);
 	TTF_CloseFont(police);
+	TTF_CloseFont(policeMini);
 	TTF_Quit();
 	SDL_Quit();
 	
