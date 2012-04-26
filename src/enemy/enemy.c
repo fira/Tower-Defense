@@ -94,14 +94,15 @@ SDL_Rect* getRect(Animation* anim) {
  * \see nextMovement
  * \param enemy Enemy to move.
  */
-void moveEnemy(Enemy* enemy) {
+void moveEnemy(Enemy* enemy){
 	SDL_Rect anim = enemy->animPosition;
 	Case *nextCase = getCase(enemy->x, enemy->y);
 	
-	if(anim.x == nextCase->x && anim.y == nextCase->y) {
+	if(anim.x == nextCase->x && anim.y == nextCase->y){
 		enemy->animation.direction = nextMovement(enemy);
 		nextCase->hasEnemy--;
-		switch(enemy->animation.direction) {
+		int hasMove = true;
+		switch(enemy->animation.direction){
 			case RIGHT:
 				enemy->x++;
 				break;
@@ -114,7 +115,12 @@ void moveEnemy(Enemy* enemy) {
 			case UP:
 				enemy->y--;
 			default:
+				hasMove = false;
 				break;
+		}
+		if(hasMove){
+			nextCase = getCase(enemy->x, enemy->y);
+			nextCase->hasEnemy++;
 		}
 	}
 }

@@ -9,7 +9,7 @@ If not, see <http://www.gnu.org/licenses/>.
 
 
 #include "menu.h"
-
+char* getPath(char* resource);
 
 /**
  * \fn Menu* menu_createMenu(SDL_Rect surface)

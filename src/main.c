@@ -53,7 +53,7 @@ void initPath(char* argv0) {
  * \param resource The resource path relative to the executable
  * \return The resource path relative to the working directory
  */
-char* getPath(char* resource) {
+char* getPath(char* resource){
 	// Basically we just append the resource to the root _path
 	char* fullPath = calloc(strlen(_path) + strlen(resource) + 1, 1);
 	return strcat(strcpy(fullPath, _path), resource);
@@ -63,9 +63,10 @@ int main(int argc, char* argv[]) {
 	// Init
 	initPath(argv[0]);
 	SDL_Surface* screen = NULL;
-	SDL_Event event;
+/*	SDL_Event event;*/
 	int *seed;
-	srand((int)seed);
+	seed = seed;
+	srand((long)seed);
 	int previousTime = 0, currentTime = 0;
 	Events *flags = createEventFlags();
 
@@ -73,7 +74,7 @@ int main(int argc, char* argv[]) {
 	SDL_SetEventFilter(eventFilter);
 	TTF_Init();
 	
-	TTF_Font *police = TTF_OpenFont(getPath("resources/zombieCat.ttf"), 20);
+	TTF_Font *police = TTF_OpenFont(getPath("resources/zombieCat.ttf"), 8);
 	TTF_Font *policeMini = TTF_OpenFont(getPath("resources/zombieCat.ttf"), 14);
 	TTF_SetFontStyle(police,TTF_STYLE_BOLD);
 
@@ -96,16 +97,16 @@ int main(int argc, char* argv[]) {
 	// Creation of the enemies
 	TypeEn *whiteCat = createTypeEn(100, 5, false, true, true, false, 1,getPath("resources/white_transparent_cat.png"));
 	TypeEn *blackCat = createTypeEn(100, 5, false, true, true, false, 1,getPath("resources/black_transparent_cat.png"));
-	Enemy *cat1 = createEnemy(1,1,whiteCat);
+/*	Enemy *cat1 = createEnemy(1,1,whiteCat);*/
 	Enemy *cat2 = createEnemy(1,10,whiteCat);
 	Enemy  *cat3 = createEnemy(6,7,blackCat);
 	Enemy *cat4 = createEnemy(21,4,blackCat);
 	
    TypeEn *zombie = createTypeEn(100,5,false,true,true,false,1,getPath("resources/zombie.png"));
    Enemy *zombie1 = createEnemy(4,4,zombie);
-   Enemy *zombie2 = createEnemy(9,4,zombie);
-   Enemy *zombie3 = createEnemy(9,9,zombie);
-   Enemy *zombie4 = createEnemy(7,14,zombie);
+/*   Enemy *zombie2 = createEnemy(9,4,zombie);*/
+/*   Enemy *zombie3 = createEnemy(9,9,zombie);*/
+/*   Enemy *zombie4 = createEnemy(7,14,zombie);*/
 
    //Add enemy in the List
    List *catList = newList(cat4);
@@ -175,11 +176,15 @@ int main(int argc, char* argv[]) {
 	position.x = _cell.x;
 	position.y = _cell.y;
 	blitToViewport(viewport, IMG_Load(getPath("resources/candy_cane.png")), NULL, &position);
-	Case cell = *getCase(9,9);
-	position.x = cell.x;
-	position.y = cell.y;
 
-	SDL_Surface *renderText = printIntTTF(cat3->x, *getCase(9,9), police);
+	SDL_Surface *renderText[_map->nbCaseW-2][_map->nbCaseH-2];
+	for(int i=1; i<_map->nbCaseW -1 ; i++){
+		for(int j=1 ; j<_map->nbCaseH -1 ; j++){
+			Case *cell = getCase(i,j);
+			renderText[i-1][j-1] = printIntTTF(cell->hasEnemy, *cell, police);
+		}
+	}
+	
 	SDL_Surface *hubText = printHudTTF(42, police);
 	SDL_Surface *lifeText = printLifeTTF(99, cat3, policeMini);
 /////////////////////////////////////////////////////////////////////
@@ -235,7 +240,11 @@ int main(int argc, char* argv[]) {
 /*		printf("Frame %i : %ims\n", framecounter++, currentTime - previousTime);		*/
 
 		previousTime = SDL_GetTicks();
-		SDL_FreeSurface(renderText);
+		for(int i=1; i<_map->nbCaseW -1 ; i++){
+			for(int j=1 ; j<_map->nbCaseH -1 ; j++){
+				SDL_FreeSurface(renderText[i-1][j-1]);
+			}
+		}
 		SDL_FreeSurface(hubText);
 		SDL_FreeSurface(lifeText);
 	}

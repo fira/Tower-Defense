@@ -110,12 +110,12 @@ void updateViewport(Viewport *viewport) {
 	// If we actually blitted something
 	if(!reldest->w || !reldest->h) return;
 
-	// Add the blitted element to the list of stuff to de-blit later
-	viewport->revertrects[viewport->revertcount] = *reldest;
-	// Don't forget to make it a map relative value again!
-	viewport->revertrects[viewport->revertcount].x += viewport->mapsurface.x;
-	viewport->revertrects[viewport->revertcount].y += viewport->mapsurface.y;
-	viewport->revertcount++;
+/*	// Add the blitted element to the list of stuff to de-blit later*/
+/*	viewport->revertrects[viewport->revertcount] = *reldest;*/
+/*	// Don't forget to make it a map relative value again!*/
+/*	viewport->revertrects[viewport->revertcount].x += viewport->mapsurface.x;*/
+/*	viewport->revertrects[viewport->revertcount].y += viewport->mapsurface.y;*/
+/*	viewport->revertcount++;*/
 }
 
 
