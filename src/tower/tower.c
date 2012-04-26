@@ -63,23 +63,22 @@ Case* searchEnemy(Tower *tower){
 	int x = tower->x;
 	int y = tower->y;
 	int range = tower->type->range;
-	Case *enemyPosition = NULL;
 	for(int i=-range;i<=range;i++){
 		for(int j=-range;j<=range;j++){
-			if(isInCircle(i+x,j+y,range*2,x,y)){	//for each case in range's circle
-				Case *possibleEnemyPosition = getCase(i+x, j+y);
+/*			if(isInSquare(i+x,j+y,range*2,x,y)){	//for each case in range's circle*/
+				Case *possibleEnemyPosition = getCase(x+i, y+j);
 				if(possibleEnemyPosition->hasEnemy){
 					return possibleEnemyPosition;
 				}
-			}
+/*			}*/
 		}
 	}
-	return enemyPosition;
+	return NULL;
 }
 
 /**
  * \fn int isInCircle(int x, int y, int range, int a, int b)
- * \brief Calcul if (x,y) is in the cercle C(a,b)
+ * \brief Calcul if a cell centered in (x,y) is in the cercle C center (a,b) and radius range
  * \param x x position of the point to find
  * \param y y position of the point to find
  * \param a x position of the circle

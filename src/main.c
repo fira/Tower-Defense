@@ -74,7 +74,7 @@ int main(int argc, char* argv[]) {
 	SDL_SetEventFilter(eventFilter);
 	TTF_Init();
 	
-	TTF_Font *police = TTF_OpenFont(getPath("resources/zombieCat.ttf"), 8);
+	TTF_Font *police = TTF_OpenFont(getPath("resources/zombieCat.ttf"), 12);
 	TTF_Font *policeMini = TTF_OpenFont(getPath("resources/zombieCat.ttf"), 14);
 	TTF_SetFontStyle(police,TTF_STYLE_BOLD);
 
@@ -99,11 +99,11 @@ int main(int argc, char* argv[]) {
 	TypeEn *blackCat = createTypeEn(100, 5, false, true, true, false, 1,getPath("resources/black_transparent_cat.png"));
 /*	Enemy *cat1 = createEnemy(1,1,whiteCat);*/
 	Enemy *cat2 = createEnemy(1,10,whiteCat);
-	Enemy  *cat3 = createEnemy(6,7,blackCat);
+	Enemy *cat3 = createEnemy(15,7,blackCat);
 	Enemy *cat4 = createEnemy(21,4,blackCat);
 	
    TypeEn *zombie = createTypeEn(100,5,false,true,true,false,1,getPath("resources/zombie.png"));
-   Enemy *zombie1 = createEnemy(4,4,zombie);
+   Enemy *zombie1 = createEnemy(2,4,zombie);
 /*   Enemy *zombie2 = createEnemy(9,4,zombie);*/
 /*   Enemy *zombie3 = createEnemy(9,9,zombie);*/
 /*   Enemy *zombie4 = createEnemy(7,14,zombie);*/
@@ -123,7 +123,7 @@ int main(int argc, char* argv[]) {
 
    //TOWER
    TypeBul *bullet = createTypeBul(getPath("resources/bullet.png"), 1);
-   TypeTo *tower = createTypeTo(0,5,0,0,false,false,false,false,bullet,NULL,getPath("resources/tower.png"));
+   TypeTo *tower = createTypeTo(0,3,0,0,false,false,false,false,bullet,NULL,getPath("resources/tower.png"));
    upgradeTypeTo(tower,0.5,getPath("resources/towerUP.png"));
    flags->selectedTower = tower->nextType;
    Tower *tower1 = createTower(7,7,tower);
@@ -185,8 +185,8 @@ int main(int argc, char* argv[]) {
 		}
 	}
 	
-	SDL_Surface *hubText = printHudTTF(42, police);
 	SDL_Surface *lifeText = printLifeTTF(99, cat3, policeMini);
+	SDL_Surface *hubText;
 /////////////////////////////////////////////////////////////////////
 		
       // Move enemies
@@ -208,7 +208,10 @@ int main(int argc, char* argv[]) {
 		tower1->target = searchEnemy(tower1);
 		if(tower1->target){
 			Bullet *bullet1 = createBullet(tower1);
+			hubText = printHudTTF(42, police);
 			animateBullet(bullet1);
+		}else{
+			hubText = printHudTTF(42, police);
 		}
       drawTowerList(towerList);
 	

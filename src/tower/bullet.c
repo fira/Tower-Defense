@@ -37,8 +37,8 @@ Bullet* createBullet(Tower *tower){
  
 void drawBullet(Bullet *bullet){
 	SDL_Rect position;
-	position.x = 280; //=xx
-	position.y = 280; //=yy
+	position.x = bullet->target->x; //=xx
+	position.y = bullet->target->y; //=yy
 	blitToViewport(_viewport, bullet->type->image, NULL, &position);
 }
 
