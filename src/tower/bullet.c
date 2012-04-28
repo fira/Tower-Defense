@@ -55,3 +55,17 @@ void animateBullet(Bullet *bullet){
 /*	}*/
 }
 
+/**
+ * \fn int damageEnemy(int damages, Enemy *enemy)
+ * \brief do damages to an enemyFont
+ *
+ * \param damages damages an enemy must take
+ * \param enemy an enemy to reduce life
+ * \return return a zero value if enemy have no life left
+ */
+ 
+int damageEnemy(int damages, Enemy *enemy){
+	enemy->life -= damages;
+  return enemy->life > 0;
+}
+
