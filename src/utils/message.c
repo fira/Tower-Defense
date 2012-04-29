@@ -44,14 +44,15 @@ SDL_Surface* printHudTTF(int message, TTF_Font *font){
 }
 
 /**
- * \fn SDL_Surface* printLifeTTF(int life, Enemy *enemy TTF_Font *miniFont)
+ * \fn SDL_Surface* printLifeTTF(Enemy *enemy TTF_Font *miniFont)
  * \brief print some info about an Enemy
  *
  * \param life an info to display behind the enemy
  * \param enemy the enemy info must follow
  */
  
-SDL_Surface* printLifeTTF(int life, Enemy *enemy, TTF_Font *miniFont){
+SDL_Surface* printLifeTTF(Enemy *enemy, TTF_Font *miniFont){
+	int life = enemy->life;
 	SDL_Color lifeColor={200,30,20};
 	char text[3];
 	SDL_Rect animOffset = enemy->animPosition;

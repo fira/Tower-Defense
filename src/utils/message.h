@@ -20,7 +20,7 @@ extern Viewport *_viewport;
 
 SDL_Surface* printIntTTF(int number, Case cell, TTF_Font *font);
 SDL_Surface* printHudTTF(int message, TTF_Font *font);
-SDL_Surface* printLifeTTF(int life, Enemy *enemy, TTF_Font *miniFont);
+SDL_Surface* printLifeTTF(Enemy *enemy, TTF_Font *miniFont);
 
 #endif /* __message_H__ */
 

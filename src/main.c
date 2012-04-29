@@ -77,6 +77,7 @@ int main(int argc, char* argv[]) {
 	TTF_Font *police = TTF_OpenFont(getPath("resources/zombieCat.ttf"), 12);
 	TTF_Font *policeMini = TTF_OpenFont(getPath("resources/zombieCat.ttf"), 14);
 	TTF_SetFontStyle(police,TTF_STYLE_BOLD);
+	TTF_SetFontStyle(policeMini,TTF_STYLE_BOLD);
 
 
 
@@ -102,7 +103,7 @@ int main(int argc, char* argv[]) {
 	Enemy *cat3 = createEnemy(15,7,blackCat);
 	Enemy *cat4 = createEnemy(21,4,blackCat);
 	
-   TypeEn *zombie = createTypeEn(100,5,false,true,true,false,1,getPath("resources/zombie.png"));
+   TypeEn *zombie = createTypeEn(42,5,false,true,true,false,1,getPath("resources/zombie.png"));
    Enemy *zombie1 = createEnemy(2,4,zombie);
 /*   Enemy *zombie2 = createEnemy(9,4,zombie);*/
 /*   Enemy *zombie3 = createEnemy(9,9,zombie);*/
@@ -177,15 +178,15 @@ int main(int argc, char* argv[]) {
 	position.y = _cell.y;
 	blitToViewport(viewport, IMG_Load(getPath("resources/candy_cane.png")), NULL, &position);
 
-	SDL_Surface *renderText[_map->nbCaseW-2][_map->nbCaseH-2];
-	for(int i=1; i<_map->nbCaseW -1 ; i++){
-		for(int j=1 ; j<_map->nbCaseH -1 ; j++){
-			Case *cell = getCase(i,j);
-			renderText[i-1][j-1] = printIntTTF(cell->hasEnemy, *cell, police);
-		}
-	}
+/*	SDL_Surface *renderText[_map->nbCaseW-2][_map->nbCaseH-2];*/
+/*	for(int i=1; i<_map->nbCaseW -1 ; i++){*/
+/*		for(int j=1 ; j<_map->nbCaseH -1 ; j++){*/
+/*			Case *cell = getCase(i,j);*/
+/*			renderText[i-1][j-1] = printIntTTF(cell->hasEnemy, *cell, police);*/
+/*		}*/
+/*	}*/
 	
-	SDL_Surface *lifeText = printLifeTTF(99, cat3, policeMini);
+	SDL_Surface *lifeText = printLifeTTF(zombie1, policeMini);
 	SDL_Surface *hubText;
 /////////////////////////////////////////////////////////////////////
 		
@@ -210,9 +211,10 @@ int main(int argc, char* argv[]) {
 			Enemy *enemyTarget = getEnemyFromList(tower1->target, zombieList);
 			Bullet *bullet1 = createBullet(tower1->type->typeBul, enemyTarget);
 			hubText = printHudTTF(42, police);
+			damageEnemy(3,enemyTarget);
 			animateBullet(bullet1);
 		}else{
-			hubText = printHudTTF(42, police);
+			hubText = printHudTTF(10, police);
 		}
       drawTowerList(towerList);
 	
@@ -244,11 +246,11 @@ int main(int argc, char* argv[]) {
 /*		printf("Frame %i : %ims\n", framecounter++, currentTime - previousTime);		*/
 
 		previousTime = SDL_GetTicks();
-		for(int i=1; i<_map->nbCaseW -1 ; i++){
-			for(int j=1 ; j<_map->nbCaseH -1 ; j++){
-				SDL_FreeSurface(renderText[i-1][j-1]);
-			}
-		}
+/*		for(int i=1; i<_map->nbCaseW -1 ; i++){*/
+/*			for(int j=1 ; j<_map->nbCaseH -1 ; j++){*/
+/*				SDL_FreeSurface(renderText[i-1][j-1]);*/
+/*			}*/
+/*		}*/
 		SDL_FreeSurface(hubText);
 		SDL_FreeSurface(lifeText);
 	}
