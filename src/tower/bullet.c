@@ -10,21 +10,17 @@
 
 #include "bullet.h"
 /**
- * \fn Bullet* createBullet(Tower *tower)
  * \brief create a new bullet
  * only tower must be able to create it's own bullet, and only when it target an enemy
- * \param tower the tower the bullet belong to
+ * \param typeBul the type of the bullet
+ * \param target an enemy to hit
  */
 
-Bullet* createBullet(Tower *tower){
+Bullet* createBullet(TypeBul *typeBul, Enemy *target){
 	Bullet *bullet;
-	if(tower->target){
-		bullet = malloc(sizeof (Bullet));
-		bullet->type = tower->type->typeBul;
-		bullet->target = tower->target;
-	}else{
-		bullet = NULL;
-	}
+	bullet = malloc(sizeof (Bullet));
+	bullet->type = typeBul;
+	bullet->target = target;
   return bullet;
 }
 
@@ -37,8 +33,10 @@ Bullet* createBullet(Tower *tower){
  
 void drawBullet(Bullet *bullet){
 	SDL_Rect position;
-	position.x = bullet->target->x; //=xx
-	position.y = bullet->target->y; //=yy
+	position.x = bullet->target->animPosition.x; //=xx
+	position.y = bullet->target->animPosition.y; //=yy
+	position.x += bullet->target->animPosition.w; //anim offset
+	position.y += bullet->target->animPosition.h + 7; //anim offset + a little to hit the body
 	blitToViewport(_viewport, bullet->type->image, NULL, &position);
 }
 

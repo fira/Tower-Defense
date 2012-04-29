@@ -207,7 +207,8 @@ int main(int argc, char* argv[]) {
 /*      }*/
 		tower1->target = searchEnemy(tower1);
 		if(tower1->target){
-			Bullet *bullet1 = createBullet(tower1);
+			Enemy *enemyTarget = getEnemyFromList(tower1->target, zombieList);
+			Bullet *bullet1 = createBullet(tower1->type->typeBul, enemyTarget);
 			hubText = printHudTTF(42, police);
 			animateBullet(bullet1);
 		}else{

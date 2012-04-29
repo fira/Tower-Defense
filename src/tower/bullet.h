@@ -20,11 +20,11 @@
 
 typedef struct{
 	Case *position;	//!< Bullet
-	Case *target;		//!< the target position
-	TypeBul *type;		//!< the type of bullet
+	Enemy *target;		//!< An enemy to kill
+	TypeBul *type;		//!< The type of bullet
 }Bullet;
 
-Bullet* createBullet(Tower *tower);
+Bullet* createBullet(TypeBul *typeBul, Enemy *target);
 void drawBullet(Bullet *bullet);
 void animateBullet(Bullet *bullet);
 int damageEnemy(int damages, Enemy *enemy);
