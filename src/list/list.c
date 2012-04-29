@@ -28,7 +28,7 @@ List* newList(void* item) {
  
 /**
  * \fn void pushList(List* list, void* item)
- * \brief Function which adds an enemy in a List.
+ * \brief Function which adds an enemy at the end of a List.
  *
  * \param list A generic list.
  * \param item The item to add in the list.
@@ -74,6 +74,27 @@ void drawEnemyList(List* list) {
 	}
 }
 
+
+/**
+ * \fn Enemy* getEnemyFromList(Case *cell, List *list)
+ * \brief get an enemy who is in a particular cell
+ *
+ * \param cell the cell where an enemy stand
+ *	\param list a list of enemies
+ */
+
+Enemy* getEnemyFromList(Case *cell, List *list){
+	while(list){
+		Enemy *spotedEnemy = (Enemy*)list->item;	
+		if(spotedEnemy->x == cell->xx && spotedEnemy->y == cell->yy){
+			return spotedEnemy;
+		}
+		list = list->nextList;
+	}
+  return NULL;
+}
+
+
 /**
  * \fn void removeEnemyFromList(Enemy* enemy, List* list)
  * \brief Function which removes an enemy in a List.
@@ -81,10 +102,10 @@ void drawEnemyList(List* list) {
  * \param enemy The enemy to remove from the list.
  * \param list A list of enemy.
  */
-void removeEnemyFromList(Enemy* enemy, List* list) {
+void removeEnemyFromList(Enemy* enemy, List* list){
 	List* previousList = list;
 	// Search of item which contains the enemy
-	while(list->item != enemy) {
+	while(list->item != enemy){
 		if(list) { 
 			// if the enemy is not in the list, we delete it
 			removeEnemy(enemy);
@@ -95,7 +116,7 @@ void removeEnemyFromList(Enemy* enemy, List* list) {
 	}
 	previousList->nextList = list->nextList;
 	removeEnemy(enemy);
-	if(previousList != list) {
+	if(previousList != list){
 		free(list);
 	}
 }
