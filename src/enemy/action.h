@@ -14,7 +14,7 @@
 #include "../utils/flag.h"
 #include "../utils/viewport.h"
 #include "../tower/tower.h"
-#include "../list/list.h"
+#include "../list/TowerList.h"
 
 typedef int (*f_action)(Viewport *viewport, Events *flags, void* data);
 enum {QUIT,ARROW_UP,ARROW_RIGHT,ARROW_DOWN,ARROW_LEFT,CASE_CLICKED,ACTION_LENGTH};

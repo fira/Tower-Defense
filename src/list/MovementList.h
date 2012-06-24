@@ -11,33 +11,14 @@
 #ifndef LIST
 #define LIST
 
-#include "../enemy/enemy.h"
-#include "../tower/tower.h"
-
-struct Enemy;
-
-typedef struct List {
-	void* item;
-	struct List* nextList;
-} List;
-
-//typedef struct EnemyList {
-//	struct Enemy* enemy;
-//	struct EnemyList* nextEnemy;
-//} EnemyList;
+#include "abstractList.h"
+#include "../enemy/typeEn.h"
 
 typedef struct MovementList {
 	Movement movement;
 	struct MovementList* nextMovement;
 } MovementList;
 
-List* newList(void* item);
-void pushList(List* list, void* item);
-void moveEnemyList(List* list);
-void drawEnemyList(List* list);
-void removeEnemyFromList(Enemy* enemy, List* list);
-
-void drawTowerList(List* list);
 
 MovementList* newMovementList(Movement firstMovement);
 MovementList* headMovement(Movement movement, MovementList* list);

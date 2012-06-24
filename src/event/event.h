@@ -11,7 +11,7 @@
 #ifndef EVENT
 #define EVENT
 
-#include "../list/list.h"
+#include "../list/EnemyList.h"
 #include <SDL/SDL.h>
 #include <stdbool.h>
 #include "../utils/viewport.h"

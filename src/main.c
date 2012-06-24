@@ -17,7 +17,11 @@
 #include "tower/tower.h"
 #include "utils/viewport.h"
 #include "event/event.h"
-#include "list/list.h"
+
+#include "list/EnemyList.h"
+#include "list/TowerList.h"
+#include "list/MovementList.h"
+
 #include "utils/menu.h"
 #include "utils/button.h"
 #include "enemy/action.h"

@@ -17,7 +17,7 @@
 #include "../map/case.h"
 #include "../map/map.h"
 #include "../enemy/enemy.h"
-#include "../list/list.h"
+#include "../list/MovementList.h"
 
 
 typedef struct node {
