@@ -29,16 +29,13 @@ Viewport* createViewport(SDL_Surface* screen, SDL_Rect surface, Map* map) {
 	viewport->mapsurface.h = surface.h;
 
 	// Initialize the viewport's screen position to given surface
-	// NOTE: Doesnt actually work (the offset is not taking into consideration yet, it'll always be drawn in 0,0)
+	// FIXME Doesnt actually work (the offset is not taking into consideration yet, it'll always be drawn in 0,0)
 	viewport->screensurface = surface;
 
 	// Map and screen the viewport is directly tied to
 	viewport->map = map;
 	viewport->screen = screen;
 
-	// FIXME This should realloc when needed. Or something like that.
-	viewport->revertrects = malloc(sizeof(SDL_Rect) * 200);
-	viewport->revertcount = 0;
 	viewport->completeredraw = 1;
 	
 	return viewport;
@@ -51,8 +48,7 @@ Viewport* createViewport(SDL_Surface* screen, SDL_Rect surface, Map* map) {
  * \param viewport Viewport to draw on the screen
  */
 void redrawViewport(Viewport* viewport) {
-	// FIXME Need a system to manage SetClipRect without slowing down the game
-	// IE. One call per drawing sequence, or ideally per frame
+	// FIXME Need a system to manage SetClipRect
 	// Right now, this prevents updating the menu !
 	SDL_SetClipRect(viewport->screen, &viewport->screensurface);
 
@@ -78,17 +74,8 @@ void updateViewport(Viewport *viewport) {
 		redrawViewport(viewport);
 		viewport->completeredraw = 0;	
 	} else {
-		/* Loop through every blitted rect, and blit the map back onto it */
-		for(i = 0; i < viewport->revertcount; i++) {
-			target = viewport->revertrects[i];
-			target.x -= viewport->mapsurface.x;
-			target.y -= viewport->mapsurface.y;	
-
-			SDL_BlitSurface(viewport->map->bg, &(viewport->revertrects[i]), viewport->screen, &target);
-		}
+		// FIXME To be implemented
 	}
-
-	viewport->revertcount = 0;
 }
 
 /**
@@ -106,16 +93,6 @@ void updateViewport(Viewport *viewport) {
 	
 	// Blit the image onto specified position
 	SDL_BlitSurface(src_sprite, relsrc, viewport->screen, reldest);
-
-	// If we actually blitted something
-	if(!reldest->w || !reldest->h) return;
-
-/*	// Add the blitted element to the list of stuff to de-blit later*/
-/*	viewport->revertrects[viewport->revertcount] = *reldest;*/
-/*	// Don't forget to make it a map relative value again!*/
-/*	viewport->revertrects[viewport->revertcount].x += viewport->mapsurface.x;*/
-/*	viewport->revertrects[viewport->revertcount].y += viewport->mapsurface.y;*/
-/*	viewport->revertcount++;*/
 }
 
 

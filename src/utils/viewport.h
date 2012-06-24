@@ -35,10 +35,6 @@ typedef struct {
 
 	Map* map;					//!< The map displayed by the viewport
 	SDL_Surface* screen;		//!< Screen the viewport will be rendered on
-
-	// FIXME This is sketchy, we could use a real way of rendering the map...
-	SDL_Rect* revertrects;		//!< List of sprites to "reverse-blit" to reset the map
-	int revertcount;			//!< Number of sprites to revert
 	
 	int completeredraw;			//!< Indicates the viewport's background should be redrawn completely on next frame
 } Viewport;
