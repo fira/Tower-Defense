@@ -65,7 +65,6 @@ void redrawViewport(Viewport* viewport) {
  * \param viewport The viewport to clear
  */
 void updateViewport(Viewport *viewport) {
-	int i;
 	SDL_Rect target;
 		
 	/* If something like scrolling happened to the background, we have to re-draw
@@ -74,7 +73,7 @@ void updateViewport(Viewport *viewport) {
 		redrawViewport(viewport);
 		viewport->completeredraw = 0;	
 	} else {
-		// FIXME To be implemented
+		// FIXME CRITICAL To be implemented
 	}
 }
 
@@ -107,7 +106,7 @@ void moveViewport(Viewport* viewport, short direction) {
 	// Idea: why not simply pass the X/Y offset to the function ?
 	// The game will also need a viewport panning function
 	switch(direction) {
-		case UP:
+		case VP_UP:
 			viewport->mapsurface.y -= 5;
 			if (viewport->mapsurface.y < 0) {
 				viewport->mapsurface.y = 0;
@@ -115,7 +114,7 @@ void moveViewport(Viewport* viewport, short direction) {
 			viewport->completeredraw = 1;
 		break;
 
-		case DOWN:
+		case VP_DOWN:
 			viewport->mapsurface.y += 5;
 			if (viewport->mapsurface.y > viewport->map->h - viewport->mapsurface.h) {
 				viewport->mapsurface.y = viewport->map->h - viewport->mapsurface.h;
@@ -123,7 +122,7 @@ void moveViewport(Viewport* viewport, short direction) {
 			viewport->completeredraw = 1;
 		break;
 
-		case LEFT:
+		case VP_LEFT:
 			viewport->mapsurface.x -= 5;
 			if (viewport->mapsurface.x < 0) {
 				viewport->mapsurface.x = 0;
@@ -131,7 +130,7 @@ void moveViewport(Viewport* viewport, short direction) {
 			viewport->completeredraw = 1;
 		break;
 
-		case RIGHT:
+		case VP_RIGHT:
 			viewport->mapsurface.x += 5;
 			if (viewport->mapsurface.x > viewport->map->w - viewport->mapsurface.w) {
 				viewport->mapsurface.x = viewport->map->w - viewport->mapsurface.w;

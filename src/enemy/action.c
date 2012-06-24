@@ -20,7 +20,7 @@
  */
 
 int viewportMoveUP(Viewport *viewport, Events *flags, void* unused){
-	moveViewport(viewport, UP);
+	moveViewport(viewport, ACT_UP);
   return 1;
 }
 
@@ -32,7 +32,7 @@ int viewportMoveUP(Viewport *viewport, Events *flags, void* unused){
  */
 
 int viewportMoveDOWN(Viewport *viewport, Events *flags, void* unused){
-	moveViewport(viewport, DOWN);
+	moveViewport(viewport, ACT_DOWN);
   return 1;
 }
 
@@ -44,7 +44,7 @@ int viewportMoveDOWN(Viewport *viewport, Events *flags, void* unused){
  */
 
 int viewportMoveLEFT(Viewport *viewport, Events *flags, void* unused){
-	moveViewport(viewport, LEFT);
+	moveViewport(viewport, ACT_LEFT);
   return 1;
 }
 
@@ -56,7 +56,7 @@ int viewportMoveLEFT(Viewport *viewport, Events *flags, void* unused){
  */
  
 int viewportMoveRIGHT(Viewport *viewport, Events *flags, void* unused){
-	moveViewport(viewport, RIGHT);
+	moveViewport(viewport, ACT_RIGHT);
   return 1;
 }
 
@@ -71,14 +71,13 @@ int viewportMoveRIGHT(Viewport *viewport, Events *flags, void* unused){
 int addTower(Viewport *viewport, Events *flags, void* caseClicked_){
 	Case *caseClicked = caseClicked_;
 	TypeTo* simpleTowerType = flags->selectedTower;
-	Case *viewportOffset = whichCase(viewport->mapsurface.x,viewport->mapsurface.y);
+	Case *viewportOffset = whichCase(viewport->map, viewport->mapsurface.x,viewport->mapsurface.y);
 	int mapPositionX = caseClicked->xx + viewportOffset->xx;
 	int mapPositionY = caseClicked->yy + viewportOffset->yy;
-	Tower *tower = createTower(mapPositionX, mapPositionY, simpleTowerType);
+	Tower *tower = createTower(viewport->map, mapPositionX, mapPositionY, simpleTowerType);
 	if(tower){
 	   flags->enemy_Path_Calculation = true;
 	   pushList((void*)flags->towerList,tower);
-	   drawTower(tower);
 	}
   return 0;
 }

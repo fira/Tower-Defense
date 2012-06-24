@@ -10,8 +10,6 @@
 
 
 #include "enemy.h"
-#include "../utils/pathFinding.h"
-#include "../utils/viewport.h"
 
 /**
  * \fn Enemy* createEnemy(int x, int y, TypeEn* type)
@@ -20,36 +18,41 @@
  * \param x Define the horizontal position of the enemy.
  * \param y Define the vertical position of the enemy.
  * \param type The type of the enemy.
+ * \param target Where the enemy is going
  * \return The pointer on the enemy, in order to use it.
  */
-Enemy* createEnemy(int x, int y, TypeEn* type) {
+Enemy* createEnemy(Map* map, int x, int y, TypeEn* type, Case *target) {
 	Enemy* enemy = (Enemy*)malloc( sizeof(Enemy) );
 
 	enemy->x = x;
 	enemy->y = y;
 	enemy->type = type;
 	enemy->animation = createAnimation(type->picture);
-	Case *anim_start = getCase(x,y);
+	Case *anim_start = getCase(map, x,y);
 	anim_start->hasEnemy = true;
 	enemy->animPosition.x = anim_start->x;
 	enemy->animPosition.y = anim_start->y;
-	enemy->animPosition.h = rand()%_map->nbCaseH;   
-	enemy->animPosition.w = rand()%_map->nbCaseW;
+	enemy->animPosition.h = anim_start->y;   
+	enemy->animPosition.w = anim_start->x;
 	enemy->life = type->maxLife;
 	enemy->speed = type->normalSpeed;
 	enemy->isPoisoned = false;
 	enemy->list = NULL;
 	
+	/* If we didn't give a target to the enemy, he sits still */
+	if(target) enemy->dest = target;
+	else enemy->dest = anim_start;
+	
 	return enemy;
 }
 
 /**
- * \fn void drawEnemy(Enemy* enemy)
- * \brief Draws an enemy on the map.
+ * \fn void updateEnemyAnim(Enemy* enemy)
+ * \brief Update the enemy animation according to its intended position
  *
- * \param enemy Enemy to draw.
+ * \param enemy Enemy to update
  */
-void drawEnemy(Enemy* enemy) {
+void updateEnemyAnim(Enemy* enemy) {
 	switch(enemy->animation.direction) {
 		case RIGHT:
 			enemy->animPosition.x++;
@@ -69,8 +72,6 @@ void drawEnemy(Enemy* enemy) {
 	SDL_Rect animOffset = enemy->animPosition;
 	animOffset.x += animOffset.w;
 	animOffset.y += animOffset.h;
-	
-	blitToViewport(_viewport, enemy->animation.currentFrame, getRect(&enemy->animation), &animOffset);
 }
 
 /**
@@ -94,12 +95,12 @@ SDL_Rect* getRect(Animation* anim) {
  * \see nextMovement
  * \param enemy Enemy to move.
  */
-void moveEnemy(Enemy* enemy){
+void moveEnemy(Map* map, Enemy* enemy){
 	SDL_Rect anim = enemy->animPosition;
-	Case *nextCase = getCase(enemy->x, enemy->y);
+	Case *nextCase = getCase(map, enemy->x, enemy->y);
 	
 	if(anim.x == nextCase->x && anim.y == nextCase->y){
-		enemy->animation.direction = nextMovement(enemy);
+		enemy->animation.direction = nextMovement(map, enemy);
 		nextCase->hasEnemy--;
 		int hasMove = true;
 		switch(enemy->animation.direction){
@@ -119,7 +120,7 @@ void moveEnemy(Enemy* enemy){
 				break;
 		}
 		if(hasMove){
-			nextCase = getCase(enemy->x, enemy->y);
+			nextCase = getCase(map, enemy->x, enemy->y);
 			nextCase->hasEnemy++;
 		}
 	}
@@ -134,18 +135,17 @@ void moveEnemy(Enemy* enemy){
  * 
  * \param enemy An Enemy whithout a path.
  */
-Movement nextMovement(Enemy* enemy){
+Movement nextMovement(Map *map, Enemy* enemy){
 	int x = enemy->x;
 	int y = enemy->y;
 	
-	Case *currentCase = getCase(x,y);
-	extern Case _cell;    //debug (candy_cane)
-	Case finalCase = _cell;    //debug (candy_cane)
-	if(currentCase->xx == finalCase.xx && currentCase->yy == finalCase.yy) {
+	Case *currentCase = getCase(map, x,y);
+
+	if(currentCase->xx == enemy->dest->xx && currentCase->yy == enemy->dest->yy) {
 		return STAY;
 	}
 	if(!enemy->list) {
-		enemy->list = searchPath(*currentCase, finalCase);
+		enemy->list = searchPath(map, *currentCase, *(enemy->dest));
 		return STAY;
 	}
 	

@@ -20,7 +20,6 @@
 
 #include "case.h"
 
-
 typedef struct {
 	int w;
 	int h;
@@ -30,10 +29,9 @@ typedef struct {
 	SDL_Surface* bg;
 } Map;
 
-extern Map* _map;
+Case* getCase(Map *map, int xx, int yy);
 Map* createMap(char* mapName);
 SDL_Surface* loadMap(char* mapName);
-Case* getCase(int xx, int yy);
-Case* whichCase(int x, int y);
+Case* whichCase(Map *map, int x, int y);
 
 #endif

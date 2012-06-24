@@ -23,7 +23,7 @@
 int eventFilter(SDL_Event* event);
 void manageEvent(SDL_Event event, Viewport* viewport, Events *flags, Action *actionList);
 void manageEvents(Viewport* viewport, Events* flags, Action *actionList);
-char* getPath(char* resource);
+const char* getPath(char* resource);
 Events* createEventFlags();
 void pathReCalculation(List *enemyList);
 

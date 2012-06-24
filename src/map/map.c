@@ -119,29 +119,30 @@ SDL_Surface* loadMap(char* mapName){
 	return background;
 }
 
-
 /**
  * \fn Case* getCase(int xx, int yy)
  * \brief Gets a Case from a map.
  * 
+ * \param map Which map to draw the coords from
  * \param xx The x position of a cell.
  * \param yy The y position of a cell.
  * \return A cell's pointer.
  */
-Case* getCase(int xx, int yy) {
-	return &(_map->matrice[xx][yy]);
+Case* getCase(Map *map, int xx, int yy) {
+	return &(map->matrice[xx][yy]);
 }
 
 /**
  * \fn Case* whiteCase(int x, int y)
  * \brief Gets a Case from a pixel position.
  * 
+ * \param Map Map on which to get the case from
  * \param x X coordinate.
  * \param y Y coordinate.
  * \return A cell's pointer.
  */
-Case* whichCase(int x, int y) {
+Case* whichCase(Map* map, int x, int y) {
 	x /= CSIZE;
 	y /= CSIZE;
-	return getCase(x,y);
+	return getCase(map, x,y);
 }

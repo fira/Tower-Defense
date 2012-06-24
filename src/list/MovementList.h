@@ -8,8 +8,8 @@
  If not, see  <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LIST
-#define LIST
+#ifndef LIST_MOVE
+#define LIST_MOVE
 
 #include "abstractList.h"
 #include "../enemy/typeEn.h"

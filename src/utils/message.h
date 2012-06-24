@@ -12,15 +12,14 @@
 
 #include <stdio.h>
 #include <SDL/SDL_ttf.h>
-#include "../enemy/enemy.h"
 #include "../map/case.h"
+#include "../enemy/enemy.h"
 #include "../utils/viewport.h"
 
-extern Viewport *_viewport;
 
-SDL_Surface* printIntTTF(int number, Case cell, TTF_Font *font);
-SDL_Surface* printHudTTF(int message, TTF_Font *font);
-SDL_Surface* printLifeTTF(Enemy *enemy, TTF_Font *miniFont);
+SDL_Surface* printIntTTF(Viewport* viewport, int number, Case cell, TTF_Font *font);
+SDL_Surface* printHudTTF(SDL_Surface* screen, int message, TTF_Font *font);
+SDL_Surface* printLifeTTF(Viewport* viewport, Enemy *enemy, TTF_Font *miniFont);
 
 #endif /* __message_H__ */
 

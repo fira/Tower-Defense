@@ -9,15 +9,15 @@
 */
 
 
-#ifndef ENNEMY_H
-#define ENNEMY_H
+#ifndef ENEMY_H
+#define ENEMY_H
 
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include "typeEn.h"
 #include "../map/map.h"
-
+#include "../utils/pathFinding.h"
 
 struct MovementList;
 
@@ -34,13 +34,15 @@ typedef struct {
 	int speed;    //!< monster's speed 
 	bool isPoisoned;    //!< true if the monster is poisoned /*!< when an enemy is poisoned, is life decrease whith time and is slowed down*/
 	TypeEn* type;    //!< monster's type
+	
 	struct MovementList *list;    //!< a list of movement to reach the destination
+	Case *dest;			//!< The current destination to run pathfinding on
 } Enemy;
 
-Enemy* createEnemy(int x, int y, TypeEn* type);
-void drawEnemy(Enemy* enemy);
-void moveEnemy(Enemy* enemy);
-Movement nextMovement(Enemy* enemy);
+Enemy* createEnemy(Map*, int x, int y, TypeEn* type, Case *target);
+void updateEnemyAnim(Enemy* enemy);
+void moveEnemy(Map*, Enemy* enemy);
+Movement nextMovement(Map*, Enemy* enemy);
 void removeEnemy(Enemy* enemy);
 
 #endif

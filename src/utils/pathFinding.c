@@ -20,7 +20,7 @@
  * \param destination The case a enemy must go.
  * \return The path.
  */     
-MovementList* searchPath(Case start, Case destination) {
+MovementList* searchPath(Map *map, Case start, Case destination) {
 	//Initialisation
 	Node* endNode = getNode(destination);
 	Node* firstNode = getNode(start);
@@ -47,7 +47,7 @@ MovementList* searchPath(Case start, Case destination) {
 	while(openList->nextList) {               
 		Node* lowestHeuristic = popHead(&openList);    // we test the most closer node (with the lowest heuristic cost)
 		if(theseTwoNodeAreEquals(lowestHeuristic,endNode)) {
-			nextMoves = pathReConstruction(lowestHeuristic);    // if we have reached the final node, a path have been found
+			nextMoves = pathReConstruction(map, lowestHeuristic);    // if we have reached the final node, a path have been found
 			freeList(openList);
 			freeList(closedList);
 			return nextMoves;
@@ -62,7 +62,7 @@ MovementList* searchPath(Case start, Case destination) {
 		int i, j;
 		float k;
 		for( i=-1, j=0, k=0.5; k<=2; j =- ((( (int)(-2*k) - 1 )%3)+1), i=(int)(k+=0.5) - 1 ) {    // i={-1,0,0,1} j={0,1,-1,0}
-			Case nearCase = *getCase(i+lowestHeuristic->x, j+lowestHeuristic->y);    // get the four Case near the one already computed 
+			Case nearCase = *getCase(map, i+lowestHeuristic->x, j+lowestHeuristic->y);    // get the four Case near the one already computed 
 			Node *nearNode = getNode(nearCase);
 			
 			if(nearCase.hasTower || amIInDaList(nearNode, closedList)) {    // we are not open to node already computed or 
@@ -255,14 +255,14 @@ void tail(Node* node, List* list) {
  * \param finalNode The destination node.
  * \return The direction an enemy must go.
  */
-MovementList* pathReConstruction(Node* finalNode) {
+MovementList* pathReConstruction(Map *map, Node* finalNode) {
 	Node* nextNode = finalNode;
 	MovementList* list = newMovementList(STAY);
 	while(finalNode->previousNode) {
 		nextNode = finalNode;
 		finalNode = finalNode->previousNode;
-		Case* currentCase = getCase(finalNode->x, finalNode->y);
-		Case* nearCase = getCase(nextNode->x, nextNode->y);
+		Case* currentCase = getCase(map, finalNode->x, finalNode->y);
+		Case* nearCase = getCase(map, nextNode->x, nextNode->y);
 		
 		list = headMovement(nextMove(*currentCase, *nearCase), list);
 	}

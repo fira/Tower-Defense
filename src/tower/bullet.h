@@ -25,7 +25,6 @@ typedef struct{
 }Bullet;
 
 Bullet* createBullet(TypeBul *typeBul, Enemy *target);
-void drawBullet(Bullet *bullet);
 void animateBullet(Bullet *bullet);
 int damageEnemy(int damages, Enemy *enemy);
 

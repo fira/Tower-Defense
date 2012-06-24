@@ -31,7 +31,7 @@ typedef struct node {
 //	struct nodeList* nextList;
 //} NodeList;
 
-MovementList* searchPath(Case start, Case destination);
+MovementList* searchPath(Map* map, Case start, Case destination);
 Node* getNode(Case cell);
 List* head(Node* node, List* list);
 Node* popHead(List** list);
@@ -40,7 +40,7 @@ Node* amIInDaList(Node* node, List* list);
 int heuristicCost(Node* node, Node* destination);
 List* push(Node* node, List* list);
 void tail(Node* node, List* list);
-MovementList* pathReConstruction(Node* finalNode);
+MovementList* pathReConstruction(Map*, Node* finalNode);
 void freeList(List* list);
 Movement nextMove(Case currentCase, Case nearCase);
 

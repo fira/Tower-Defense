@@ -11,6 +11,12 @@
 
 #ifndef ACTION_H
 #define ACTION_H
+
+#define ACT_UP 0
+#define ACT_RIGHT 1
+#define ACT_DOWN 2
+#define ACT_LEFT 3
+
 #include "../utils/flag.h"
 #include "../utils/viewport.h"
 #include "../tower/tower.h"

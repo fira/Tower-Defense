@@ -17,11 +17,10 @@
 #include "../map/map.h"
 
 extern Map* _map;
-Tower* createTower(int x, int y, TypeTo* type);
+Tower* createTower(Map* map, int x, int y, TypeTo* type);
 void upgrade(Tower* t);
 int getSellPrice(Tower* tower);
-void drawTower(Tower* tower);
-Case* searchEnemy(Tower *tower);
+Case* searchEnemy(Map*, Tower *tower);
 int isInCircle(int x, int y, int range, int a, int b);
 
 #endif

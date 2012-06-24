@@ -8,14 +8,13 @@
  If not, see  <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LIST
-#define LIST
+#ifndef LIST_ENEMY
+#define LIST_ENEMY
 
 #include "abstractList.h"
 #include "../enemy/enemy.h"
 
-void moveEnemyList(List* list);
-void drawEnemyList(List* list);
+void moveEnemyList(Map*, List* list);
 void removeEnemyFromList(Enemy* enemy, List* list);
 
 #endif

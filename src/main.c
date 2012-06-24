@@ -10,261 +10,35 @@
 
 
 #include <stdbool.h>
+#include <stdlib.h>
+#include <stdio.h>
 
+#include <SDL/SDL.h>
 
-#include "map/map.h"
-#include "enemy/enemy.h"
-#include "tower/tower.h"
-#include "utils/viewport.h"
-#include "event/event.h"
-
-#include "list/EnemyList.h"
-#include "list/TowerList.h"
-#include "list/MovementList.h"
-
-#include "utils/menu.h"
-#include "utils/button.h"
-#include "enemy/action.h"
-#include "tower/bullet.h"
-#include "utils/message.h"
-
-// Global variables
-
-Viewport* _viewport;
-Map* _map;
-char* _path;
-Case _cell; // for debug (candy_cane)
-int framecounter = 0;
-
-/**
- * \fn void initPath(char* argv0)
- * \brief Finds the executable path from the current working directory
- *
- * \param argv0 Invocation command of the executable
- * \return 
- */
-void initPath(char* argv0) {
-	int trimLength = strrchr(argv0, '/') + 1 - argv0;
-	_path = calloc(trimLength, 1);
-	strncpy(_path, argv0, trimLength);
-}
-
-// FIXME This function is used for file loading in other files too..
-/**
- * \fn char* getPath(char* resource)
- * \brief Converts a resource path from executable-relative to a path relative to the current working directory
- *
- * \param resource The resource path relative to the executable
- * \return The resource path relative to the working directory
- */
-char* getPath(char* resource){
-	// Basically we just append the resource to the root _path
-	char* fullPath = calloc(strlen(_path) + strlen(resource) + 1, 1);
-	return strcat(strcpy(fullPath, _path), resource);
-}
+#include "engine.h"
 
 int main(int argc, char* argv[]) {
-	// Init
-	initPath(argv[0]);
-	SDL_Surface* screen = NULL;
-/*	SDL_Event event;*/
-	int *seed;
+	/* Weird seeding technique made-in-nepta */
+	int *seed = malloc(sizeof(int*));
 	seed = seed;
-	srand((long)seed);
-	int previousTime = 0, currentTime = 0;
-	Events *flags = createEventFlags();
+	srand((long)*seed);
+	free(seed);
 
+	/* Get the relative path from executable to resources */
+	int respath_length = strrchr(argv[0], '/') + 1 - argv[0];
+	char *respath = calloc(respath_length + 10, 1);
+	strncpy(respath, argv[0], respath_length);
+	strncpy(respath+respath_length, "resources/", 10);
+	
 	SDL_Init(SDL_INIT_VIDEO);
+	// FIXME Deficient by design? (cf. event/event.c)
+	// Several instances of the Engine could not run because they all share the same event queue...
 	SDL_SetEventFilter(eventFilter);
-	TTF_Init();
-	
-	TTF_Font *police = TTF_OpenFont(getPath("resources/zombieCat.ttf"), 12);
-	TTF_Font *policeMini = TTF_OpenFont(getPath("resources/zombieCat.ttf"), 14);
-	TTF_SetFontStyle(police,TTF_STYLE_BOLD);
-	TTF_SetFontStyle(policeMini,TTF_STYLE_BOLD);
-
-
-
-	screen = SDL_SetVideoMode(800, 600, 32, SDL_HWSURFACE | SDL_ASYNCBLIT | SDL_DOUBLEBUF | SDL_NOFRAME);
+	/* Init the main display screen for our app */
+	SDL_Surface *screen = SDL_SetVideoMode(800, 600, 32, SDL_HWSURFACE | SDL_ASYNCBLIT | SDL_DOUBLEBUF);
 	SDL_WM_SetCaption("Tower Defense", NULL);
-	Action *actionList = initAction();
 	
-	Map* map = createMap(getPath("resources/Forest.png"));
-	_map = map;
-	
-	SDL_Rect surface = {0, 0, 720, 600};
-	Viewport* viewport = createViewport(screen, surface, map);
-	_viewport = viewport;
-	
-	// FIXME uh? what's this thing?
-	surface.x = 800 - 80; surface.y = 0; surface.h = 80; surface.w = 600;
-	
-	// Creation of the enemies
-	TypeEn *whiteCat = createTypeEn(100, 5, false, true, true, false, 1,getPath("resources/white_transparent_cat.png"));
-	TypeEn *blackCat = createTypeEn(100, 5, false, true, true, false, 1,getPath("resources/black_transparent_cat.png"));
-/*	Enemy *cat1 = createEnemy(1,1,whiteCat);*/
-	Enemy *cat2 = createEnemy(1,10,whiteCat);
-	Enemy *cat3 = createEnemy(15,7,blackCat);
-	Enemy *cat4 = createEnemy(21,4,blackCat);
-	
-   TypeEn *zombie = createTypeEn(42,5,false,true,true,false,1,getPath("resources/zombie.png"));
-   Enemy *zombie1 = createEnemy(2,4,zombie);
-/*   Enemy *zombie2 = createEnemy(9,4,zombie);*/
-/*   Enemy *zombie3 = createEnemy(9,9,zombie);*/
-/*   Enemy *zombie4 = createEnemy(7,14,zombie);*/
-
-   //Add enemy in the List
-   List *catList = newList(cat4);
-   pushList((void*)catList,cat2);
-   pushList((void*)catList,cat3);
-//   pushList((void*)catList,cat1);
-   
-   List *zombieList = newList(zombie1);
-/*   pushList((void*)zombieList,zombie2);*/
-/*   pushList((void*)zombieList,zombie3);*/
-/*   pushList((void*)zombieList,zombie4);*/
-   
-//   removeEnemyFromList(cat4,catList);
-
-   //TOWER
-   TypeBul *bullet = createTypeBul(getPath("resources/bullet.png"), 1);
-   TypeTo *tower = createTypeTo(0,3,0,0,false,false,false,false,bullet,NULL,getPath("resources/tower.png"));
-   upgradeTypeTo(tower,0.5,getPath("resources/towerUP.png"));
-   flags->selectedTower = tower->nextType;
-   Tower *tower1 = createTower(7,7,tower);
-
-   List *towerList = newList(tower1);
-   flags->towerList = towerList;
-   
-	// Create and Renders the right panel game menu
-	SDL_Rect surfaceMenu = {720, 0, 800, 600};
-	Menu* menu = menu_create(screen, surfaceMenu);
-	menu_loadBackground(menu, "resources/enemyFont.gif");
-		// For testing only, we add a few random buttons
-	menu_addButton(menu, button_createBuildButton(tower));
-	menu_addButton(menu, button_createBuildButton(tower));
-	menu_addButton(menu, button_createBuildButton(tower));
-	menu_render(menu);
-
-
-	_cell = *getCase(20,11);
-	// Main loop
-	while(actionList[QUIT].boolean == NULL){
-		// Managing the events
-		manageEvents(viewport, flags,actionList);
-		for(int i=1;i<ACTION_LENGTH;i++){
-			if(actionList[i].boolean){
-				int repeat = (*actionList[i].action)(viewport,flags,actionList[i].boolean);
-				if(!repeat){
-					actionList[i].boolean = NULL;
-				}
-			}
-		}
-
-		// Redraws the map (viewport contents) before blitting stuff on it
-		updateViewport(viewport);
-		
-		
-///////////////////////////// DEBUG WALL /////////////////////////////
-   SDL_Rect position;
-	for(int i=0;i < _map->nbCaseW;i++){
-		for(int j=0;j < _map->nbCaseH;j++){
-		   Case cell = *getCase(i,j);
-		   position.x = cell.x;
-		   position.y = cell.y;
-			if(map->matrice[i][j].hasTower == 2){
-            SDL_Surface *wall = IMG_Load(getPath("resources/brick.png"));
-			   blitToViewport(viewport, wall, NULL, &position);
-			}
-		}
-	}
-	position.x = _cell.x;
-	position.y = _cell.y;
-	blitToViewport(viewport, IMG_Load(getPath("resources/candy_cane.png")), NULL, &position);
-
-/*	SDL_Surface *renderText[_map->nbCaseW-2][_map->nbCaseH-2];*/
-/*	for(int i=1; i<_map->nbCaseW -1 ; i++){*/
-/*		for(int j=1 ; j<_map->nbCaseH -1 ; j++){*/
-/*			Case *cell = getCase(i,j);*/
-/*			renderText[i-1][j-1] = printIntTTF(cell->hasEnemy, *cell, police);*/
-/*		}*/
-/*	}*/
-	
-	SDL_Surface *lifeText = printLifeTTF(zombie1, policeMini);
-	SDL_Surface *hubText;
-/////////////////////////////////////////////////////////////////////
-		
-      // Move enemies
-      if(flags->enemy_Path_Calculation){
-         pathReCalculation(catList);
-         pathReCalculation(zombieList);
-         flags->enemy_Path_Calculation = false;
-      }
-      moveEnemyList(zombieList);
-      moveEnemyList(catList);
-
-		// Blit enemies
-      drawEnemyList(zombieList);
-      drawEnemyList(catList);
-      //Blit TOWER
-/*      if(event.key.keysym.sym == SDLK_u){*/
-/*         upgrade(tower1);*/
-/*      }*/
-		tower1->target = searchEnemy(tower1);
-		if(tower1->target){
-			Enemy *enemyTarget = getEnemyFromList(tower1->target, zombieList);
-			Bullet *bullet1 = createBullet(tower1->type->typeBul, enemyTarget);
-			hubText = printHudTTF(42, police);
-			damageEnemy(3,enemyTarget);
-			animateBullet(bullet1);
-		}else{
-			hubText = printHudTTF(10, police);
-		}
-      drawTowerList(towerList);
-	
-	/* This should be handled by event.c
-      switch(event.key.keysym.sym){
-         case SDLK_a:
-            flags->selectedTower = tower;
-          break;
-         case SDLK_b:
-            flags->selectedTower = tower->nextType;
-          break;
-         default:
-          break;
-	
-      }*/
-/*      */
-
-      
-		// Ask SDL to swap framebuffers to update the displayed screen
-		SDL_Flip(screen);
-	
-		// Managing frames
-		currentTime = SDL_GetTicks();
-		if (currentTime - previousTime <= 20) {
-			SDL_Delay(20 - (currentTime - previousTime));
-		}
-		
-		// DEBUG
-/*		printf("Frame %i : %ims\n", framecounter++, currentTime - previousTime);		*/
-
-		previousTime = SDL_GetTicks();
-/*		for(int i=1; i<_map->nbCaseW -1 ; i++){*/
-/*			for(int j=1 ; j<_map->nbCaseH -1 ; j++){*/
-/*				SDL_FreeSurface(renderText[i-1][j-1]);*/
-/*			}*/
-/*		}*/
-		SDL_FreeSurface(hubText);
-		SDL_FreeSurface(lifeText);
-	}
-	free(actionList);
-	TTF_CloseFont(police);
-	TTF_CloseFont(policeMini);
-	TTF_Quit();
-	SDL_Quit();
-	
-	return EXIT_SUCCESS;
+	/* Instantiate the game engine */
+	Engine *game = createEngine(screen, respath);
 }
-
 

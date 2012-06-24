@@ -12,8 +12,8 @@
 #include "tower.h"
 #include "../utils/viewport.h"
 
-Tower* createTower(int x, int y, TypeTo* type) {
-   Case *cell = getCase(x,y);
+Tower* createTower(Map* map, int x, int y, TypeTo* type) {
+   Case *cell = getCase(map, x,y);
    if(cell->hasEnemy || cell->hasTower){
       return NULL;
    }
@@ -38,35 +38,20 @@ void upgrade(Tower* t) {
 }
 
 /**
- * \fn void drawTower(Tower* tower)
- * \brief Draws a tower in the map.
- * 
- * \param tower A tower to draw.
- */
-void drawTower(Tower* tower) {
-	SDL_Rect position;
-	Case* cell = getCase(tower->x, tower->y);
-	position.x = cell->x;
-	position.y = cell->y;
-	cell->hasTower = true;
-	blitToViewport(_viewport, tower->type->image, NULL, &position);
-}
-
-/**
  * \fn Case searchEnemy(Tower *tower)
  * \brief search an enemy around the tower
  * \param tower the tower which search the enemy
  * \return the first cell which have an enemy and the tower position if there aren't any enemy in the range
  */
-
-Case* searchEnemy(Tower *tower){
+// deficient by design?
+Case* searchEnemy(Map* map, Tower *tower){
 	int x = tower->x;
 	int y = tower->y;
 	int range = tower->type->range;
 	for(int i=-range;i<=range;i++){
 		for(int j=-range;j<=range;j++){
 /*			if(isInSquare(i+x,j+y,range*2,x,y)){	//for each case in range's circle*/
-				Case *possibleEnemyPosition = getCase(x+i, y+j);
+				Case *possibleEnemyPosition = getCase(map, x+i, y+j);
 				if(possibleEnemyPosition->hasEnemy){
 					return possibleEnemyPosition;
 				}

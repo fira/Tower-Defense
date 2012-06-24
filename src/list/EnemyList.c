@@ -21,30 +21,13 @@
  * \see moveEnemy
  * \param list A list of Enemy to move.
  */
-void moveEnemyList(List* list) {
-	moveEnemy(list->item);
+void moveEnemyList(Map *map, List* list) {
+	moveEnemy(map, list->item);
 	while(list->nextList) {
 		list = list->nextList;
-		moveEnemy(list->item);
+		moveEnemy(map, list->item);
 	}
 }
-
-/**
- * \fn void drawEnemyList(List* list)
- * \brief Draws an List of enemy.
- * The function draws each enemy of a list.
- * 
- * \see drawEnemy
- * \param list A list of Enemy to draw.
- */
-void drawEnemyList(List* list) {
-	drawEnemy(list->item);
-	while(list->nextList) {
-		list = list->nextList;
-		drawEnemy(list->item);
-	}
-}
-
 
 /**
  * \fn Enemy* getEnemyFromList(Case *cell, List *list)

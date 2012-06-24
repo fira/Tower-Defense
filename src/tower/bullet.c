@@ -25,31 +25,15 @@ Bullet* createBullet(TypeBul *typeBul, Enemy *target){
 }
 
 /**
- * \fn void drawBullet(Bullet *bullet)
- * \brief draw a bullet
- *
- * \param bullet a bullet to draw
- */
- 
-void drawBullet(Bullet *bullet){
-	SDL_Rect position;
-	position.x = bullet->target->animPosition.x; //=xx
-	position.y = bullet->target->animPosition.y; //=yy
-	position.x += bullet->target->animPosition.w; //anim offset
-	position.y += bullet->target->animPosition.h + 7; //anim offset + a little to hit the body
-	blitToViewport(_viewport, bullet->type->image, NULL, &position);
-}
-
-/**
  * \fn void animateBullet(Bullet *bullet)
  * \brief move the bullet to an enemy and draw it
- *	Depreciated, recode your own function!
+ *	VERY Deprecated, recode your own function!
  * \param bullet the bullet to animate
- */
+ */ 
  
 void animateBullet(Bullet *bullet){
 /*	if(!(bullet->position->xx == bullet->position->x && bullet->position->yy == bullet->position->y)){*/
-		drawBullet(bullet);
+		/* OR DONT. drawBullet(bullet); */
 /*	}*/
 }
 

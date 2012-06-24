@@ -91,7 +91,7 @@ void manageEvent(SDL_Event event, Viewport* viewport, Events *flags, Action *act
       // Mouse left click
       case SDL_MOUSEBUTTONDOWN:
          if(event.button.button == SDL_BUTTON_LEFT) {
-		   	actionList[CASE_CLICKED].boolean = whichCase(event.button.x, event.button.y);
+		   	actionList[CASE_CLICKED].boolean = whichCase(viewport->map, event.button.x, event.button.y);
          }
          break;
 			
