@@ -13,11 +13,28 @@
 
 /* Starts the game engine on a given SDL Surface, that should have been
 initialized beforehand. It also requires the path to the game resources.  */
-Engine *createEngine(SDL_Surface *screen, const char* respath) { return NULL; }
+Engine *createEngine(SDL_Surface *screen, const char* respath) { 
+	Engine *engine = malloc(sizeof(Engine));
+
+	engine->respath = malloc(strlen(respath)+1);
+	strcpy(engine->respath, respath);
+
+	char *path = getPath(engine, "stuff.png");
+	printf("I would have loaded %s !\n", path);
+	free(path);
+	
+	return NULL;
+ }
+
+
 void updateEngine(Engine *engine) {}
 
-// FIXME
-const char *getPath(char *file) { return NULL; }
+/* Remember to free those after use.... Unlike what we used to do.... */
+char *getPath(Engine *engine, const char *file) { 
+	char *out = calloc(strlen(engine->respath) + strlen(file) + 1);
+	strcpy(out, respath);
+	strcpy(out+strlen(respath), file); 
+}
 
 
 
